@@ -53,15 +53,6 @@ def find_all_paths(graph, x, y, end_x, end_y, path):
     """
     Рекурсивная функция для поиска всех путей в графе.
     """
-    #if (x, y) == (end_x, end_y):
-        #print("Same Node")
-        #return
-    #if (x, y) not in graph.keys():
-        #print("Выбирая конец или начало пути, вы кликнули на стенку лабиринта", e)
-        #return
-    #if (end_x, end_y) not in graph.keys():
-        #print("Выбирая конец или начало пути, вы кликнули на стенку лабиринта", e)
-        #return
     key = (x, y)
     if len(graph[key]) == 1:
         path.append(key)
