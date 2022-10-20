@@ -7,7 +7,6 @@ from pygame.locals import (
     KEYDOWN,
 )
 
-
 def get_rect(x, y):
     return x * TILE, y * TILE, TILE - 0, TILE - 0
 
@@ -36,6 +35,7 @@ def lab_to_graph(lab):
     return graph
 
 def sort_graph(graph):
+    """Сортируем граф по количеству ребер"""
     sorted_graph = {}
     sorted_keys = sorted(graph, key=graph.get)
     for w in sorted_keys:
@@ -43,6 +43,10 @@ def sort_graph(graph):
     return sorted_graph
 
 def del_bad_paths(graph, x, y, end_x, end_y):
+    """
+    Функция для удаления висячих вершин графа
+    Упрощаем граф перед рекурсией
+    """
     for key in list(graph.keys()):
         if len(graph[key]) == 1 and key != (x,y) and key != (end_x, end_y):
             value = graph[key]
@@ -123,8 +127,7 @@ for line in filecontents:
 Labyrintian.close()
 graph = lab_to_graph(grid)
 sc.fill(pg.Color('white'))
-# draw grid
-[[pg.draw.rect(sc, pg.Color('black'), get_rect(x, y))  # , border_radius=TILE // 5)
+[[pg.draw.rect(sc, pg.Color('black'), get_rect(x, y))
   for x, col in enumerate(row) if col] for y, row in enumerate(grid)]
 pg.display.flip()
 count = 0
@@ -142,10 +145,8 @@ while running:
             if event.key == K_ESCAPE:
                 running = False
             if event.key == K_SPACE and count == 4:
-                # Create_lab(Lab_for_pygame) # Обновляет лабиринт.
-                # Если путей несколько, надо включить для того, чтобы пути не накладывались друг на друга при прорисовке
-                sc.fill(pg.Color('white'))
-                [[pg.draw.rect(sc, pg.Color('black'), get_rect(x, y))  # , border_radius=TILE // 5)
+                sc.fill(pg.Color('white')) # Обновляем лабиринт
+                [[pg.draw.rect(sc, pg.Color('black'), get_rect(x, y))
                   for x, col in enumerate(row) if col] for y, row in enumerate(grid)]
                 pg.display.flip()
                 currentPlace = file1.readline()  # Считываем пути из файла all_paths.txt
@@ -154,7 +155,7 @@ while running:
                     file1.close()
                     count += 1
                 else:
-                    data.sort(key = len)
+                    data.sort(key = len) # Сортируем список путей по длине
                     for x in data:
                         surf = pg.Surface((TILE, TILE))
                         surf.fill('red')
